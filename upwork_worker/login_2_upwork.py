@@ -27,6 +27,7 @@ with SB(uc=True) as sb:
     window_handles = sb.driver.window_handles
     sb.driver.switch_to.window(window_handles[0])  
     sb.open('https://www.upwork.com/nx/search/talent/?nbs=1&q=Data%20Analyst&revenue=10000')
+    time.sleep(5)
     page_source = sb.get_page_source()
     print(page_source)
     with open("upwork_page_source.html", "w", encoding="utf-8") as file:
