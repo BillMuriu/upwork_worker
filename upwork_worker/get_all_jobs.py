@@ -48,12 +48,16 @@ def login_and_scrape():
         print("Waiting for the page to load completely...")
         time.sleep(random.uniform(3, 7))
 
-        # Wait for and click on only the first matching element
-        print("Waiting for the first matching element to be visible...")
-        sb.wait_for_element_visible('h5[role="presentation"].align-items-center.mb-2x[data-v-6ba7fa90=""]:first-of-type')
-        sb.click('h5[role="presentation"].align-items-center.mb-2x[data-v-6ba7fa90=""]:first-of-type')
-        print("Clicked on the first matching element.")
-        time.sleep(random.uniform(7, 8))
+        # Wait for and click on only the first matching <a> element
+        print("Waiting for the first matching <a> element to be visible...")
+        sb.wait_for_element_visible('a[data-v-6ba7fa90][class="up-n-link cursor-pointer no-underline"][tabindex="0"]')
+        sb.click('a[data-v-6ba7fa90][class="up-n-link cursor-pointer no-underline"][tabindex="0"]')
+        print("Clicked on the first matching <a> element.")
+
+        # Wait for the modal to pop up
+        print("Waiting for the modal to appear...")
+        sb.wait_for_element_visible('h2.air3-modal-title')
+        print("Modal detected!")
 
         # Save the source HTML
         page_source = sb.get_page_source()
@@ -66,3 +70,4 @@ def login_and_scrape():
 # Entry point for the script
 if __name__ == "__main__":
     login_and_scrape()
+
