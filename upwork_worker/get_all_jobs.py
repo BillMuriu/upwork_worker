@@ -2,7 +2,6 @@ import time
 import random
 from seleniumbase import SB
 
-
 # Define the login_and_scrape function
 def login_and_scrape():
     with SB(uc=True) as sb:
@@ -44,30 +43,40 @@ def login_and_scrape():
         sb.open(url)
         time.sleep(random.uniform(7, 12))  # Sleep to allow the page to load
 
-        # Wait for a few seconds before interacting with the element
+        # Wait for the page to load completely
         print("Waiting for the page to load completely...")
         time.sleep(random.uniform(3, 7))
 
-        # Wait for and click on only the first matching <a> element
-        print("Waiting for the first matching <a> element to be visible...")
-        sb.wait_for_element_visible('a[data-v-6ba7fa90][class="up-n-link cursor-pointer no-underline"][tabindex="0"]')
-        sb.click('a[data-v-6ba7fa90][class="up-n-link cursor-pointer no-underline"][tabindex="0"]')
-        print("Clicked on the first matching <a> element.")
+        # Wait for the pagination element to be visible before extracting the page count
+        sb.wait_for_element_visible('li.air3-pagination-nr .air3-pagination-nr-btn.is-active span.sr-only')
+        page_info = sb.find_element('li.air3-pagination-nr .air3-pagination-nr-btn.is-active span.sr-only').text
+        total_pages = int(page_info.split()[-1])  # Extract the total number of pages
 
-        # Wait for the modal to pop up
-        print("Waiting for the modal to appear...")
-        sb.wait_for_element_visible('h2.air3-modal-title')
-        print("Modal detected!")
+        print(f"Total pages to scrape: {total_pages}")
 
-        # Save the source HTML
-        page_source = sb.get_page_source()
-        with open("upwork_page_source.html", "w", encoding="utf-8") as file:
-            file.write(page_source)
+        # Loop through all the pages and scrape data
+        for page_number in range(1, total_pages + 1):
+            print(f"Scraping page {page_number} of {total_pages}...")
+            
+            # Save the page source for the current page
+            page_source = sb.get_page_source()
+            with open(f"upwork_page_source_page_{page_number}.html", "w", encoding="utf-8") as file:
+                file.write(page_source)
 
-        print(f"Processed URL: {url}.")
+            # Perform any scraping logic you need (e.g., extracting job data)
+            # For example, extract all <a> elements for job links
+            job_links = sb.find_elements('a[data-v-6ba7fa90][class="up-n-link cursor-pointer no-underline"][tabindex="0"]')
+            for job_link in job_links:
+                print(f"Job found: {job_link.text}")
 
+            # If not on the last page, click the next page button
+            if page_number < total_pages:
+                next_page_button = sb.find_element(f'//button[@data-ev-page_index="{page_number + 1}"]')
+                sb.click(next_page_button)  # Use sb.click to handle the click event
+                time.sleep(random.uniform(3, 7))  # Wait for the page to load before scraping the next one
+
+        print("Finished scraping all pages.")
 
 # Entry point for the script
 if __name__ == "__main__":
     login_and_scrape()
-
