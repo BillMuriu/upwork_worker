@@ -71,8 +71,9 @@ def login_and_scrape():
 
             # If not on the last page, click the next page button
             if page_number < total_pages:
-                next_page_button = sb.find_element(f'//button[@data-ev-page_index="{page_number + 1}"]')
-                sb.click(next_page_button)  # Use sb.click to handle the click event
+                next_page_button_selector = f'//button[@data-ev-page_index="{page_number + 1}"]'
+                sb.click(next_page_button_selector)
+
                 time.sleep(random.uniform(3, 7))  # Wait for the page to load before scraping the next one
 
         print("Finished scraping all pages.")
