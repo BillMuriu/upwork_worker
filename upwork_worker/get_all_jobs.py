@@ -3,7 +3,7 @@ import random
 from seleniumbase import SB
 
 def login_and_scrape():
-    with SB(uc=True) as sb:
+    with SB(uc=True, headless=True) as sb:
         print("Opening Upwork...")
         sb.driver.uc_open_with_reconnect("https://www.upwork.com/", 10)
 
@@ -91,10 +91,10 @@ def login_and_scrape():
 
 
                         # Wait for the modal to appear
-                        sb.wait_for_element_visible('div.modal-content')
+                        sb.wait_for_element_visible('div.air3-modal-content')
 
-                        # Extract modal content
-                        modal_content = sb.get_element('div.modal-content').get_attribute("innerHTML")
+                        sb.sleep(1)
+                        modal_content = sb.get_element('div.air3-modal-content').get_attribute("innerHTML")
                         modal_filename = f"page_{page_number}_job_{index + 1}_modal.html"
                         
                         # Save modal content to a file
@@ -104,7 +104,7 @@ def login_and_scrape():
 
                         # Close the modal
                         sb.click('button[data-ev-label="modal_close"]')
-                        sb.sleep(random.uniform(2, 5))  # Random wait to avoid detection
+                        sb.sleep(random.uniform(1, 3))  # Random wait to avoid detection
                     except Exception as e:
                         print(f"Error processing job {index + 1}: {e}")
                         continue  # Skip any jobs that cause an error
