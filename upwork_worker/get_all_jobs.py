@@ -3,7 +3,7 @@ import random
 from seleniumbase import SB
 
 def login_and_scrape():
-    with SB(uc=True, headless=True) as sb:
+    with SB(uc=True) as sb:
         print("Opening Upwork...")
         sb.driver.uc_open_with_reconnect("https://www.upwork.com/", 10)
 

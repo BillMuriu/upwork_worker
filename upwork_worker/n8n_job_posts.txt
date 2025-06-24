@@ -1,0 +1,14 @@
+jobs I can enquire or qualify for
+- scripting and automation.
+- Ai automation.
+- Ai agent automation development.
+- Business process automation
+
+main_url = 'https://www.upwork.com/nx/search/jobs/?q=n8n'
+scrape_50_jobs_per_page = 'https://www.upwork.com/nx/search/jobs/?q=n8n&page=1&per_page=50'
+The last page for n8n automation is 'page-4' -> 'https://www.upwork.com/nx/search/jobs/?q=n8n&page=4&per_page=50'
+
+
+
+multi_page_url = 'https://www.upwork.com/nx/search/jobs/?per_page=50&q=make.com&page=2"
+The last page for the query make.com is page -> 'page=14' -> for make.com automation.
